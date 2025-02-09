@@ -50,6 +50,19 @@ export const register = async (userData) => {
 export const login = async (credentials) => {
   try {
     const response = await api.post('/login', credentials);
+    
+    const userEmail = response.data.user.email;
+    
+    // Simpan ke session storage
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(
+        'user',
+        JSON.stringify({
+            email: userEmail,
+          })
+      );
+    }
+    
     return response.data;
   } catch (error) {
     throw error.response.data;
